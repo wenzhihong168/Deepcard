@@ -60,23 +60,6 @@ python run_evaluate.py --test_csv data/internal_test.csv --artifacts artifacts
 python run_evaluate.py --test_csv data/external.csv      --artifacts artifacts
 ```
 
-Interpretability (SHAP global importance for one task):
-
-```python
-import pandas as pd, torch
-from config import MODEL
-from model import DeepCard
-from feature_engineering import add_derived_features
-from data import order_features
-from interpret import shap_global_importance
-
-df = add_derived_features(pd.read_csv("data/internal_test.csv"))
-X = order_features(df)
-model = DeepCard(MODEL); model.load_state_dict(torch.load("artifacts/deepcard_fold0.pt"))
-imp = shap_global_importance(model, X[:50], X[:50], task="mitral_regurgitation")
-print(sorted(imp.items(), key=lambda kv: -kv[1])[:10])
-```
-
 
 ## Citation
 
