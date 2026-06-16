@@ -77,26 +77,6 @@ imp = shap_global_importance(model, X[:50], X[:50], task="mitral_regurgitation")
 print(sorted(imp.items(), key=lambda kv: -kv[1])[:10])
 ```
 
-## Architecture summary
-
-* **Input** — 39 standardized measurements arranged in a fixed, clinically
-  defined 1-D order (physiologically coupled parameters in contiguous blocks).
-* **Backbone** — conv stem → 5 residual 1-D conv blocks (kernel 3, BatchNorm,
-  ReLU, dropout, skip connections).
-* **Attention** — 8-head self-attention over the 39 feature positions, then
-  global average pooling.
-* **Heads** — 8 multi-class severity heads (softmax) + 9 binary heads (sigmoid).
-* **Training** — weighted multi-task loss, Adam + L2 (weight decay), cosine-
-  annealing LR, Gaussian-noise augmentation, and stratified 5-fold CV with
-  ensemble averaging. Class imbalance is handled by the inverse-frequency
-  weighted loss; a SMOTE utility (training only, with a physiological-
-  plausibility filter) is provided for the per-task oversampling experiments.
-
-## Reproducibility notes
-
-Hyperparameters are centralized in `config.py` and the global seed is `42`.
-The block-wise ordering of the 39 features is defined in `config.FEATURE_ORDER`
-and matches Supplemental Table S* of the paper.
 
 ## Citation
 
